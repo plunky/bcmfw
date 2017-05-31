@@ -24,7 +24,7 @@
  */
 
 /*
- * bcmfw-install [src] [dest]
+ * bcmfw-install [source-dir]
  *
  * search for the *-brcm.inf file [in the directory given], parse
  * it to discover which devices have PatchRAM files, copy them to
