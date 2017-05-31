@@ -113,6 +113,7 @@ read_ihex(const char *infile)
 	uint8_t type, count;
 	uint8_t data[UINT8_MAX];
 	char ch;
+	int i;
 
 	infd = open(infile, O_RDONLY);
 	if (infd == -1)
@@ -135,7 +136,7 @@ read_ihex(const char *infile)
 		addr = (read_byte() << 8) + read_byte();
 		type = read_byte();
 
-		for (int i = 0; i < count; i++)
+		for (i = 0; i < count; i++)
 			data[i] = read_byte();
 
 		(void)read_byte(); /* this byte ensures cksum == 0 */
@@ -168,7 +169,7 @@ read_ihex(const char *infile)
 				printf("  Data address 0x%08x, count %u",
 				    le32dec(block->data), block->count);
 
-				for (int i = 4; i < block->count; i++) {
+				for (i = 4; i < block->count; i++) {
 					printf("%s %02x",
 					    (((i - 4) % 16) ? "" : "\n   "),
 					    block->data[i]);
