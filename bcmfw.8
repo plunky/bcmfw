@@ -1,0 +1,92 @@
+.\"
+.\" Copyright (c) 2006 Itronix Inc.
+.\" All rights reserved.
+.\"
+.\" Written by Iain Hibbert for Itronix Inc.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. The name of Itronix Inc. may not be used to endorse
+.\"    or promote products derived from this software without specific
+.\"    prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY ITRONIX INC. ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+.\" TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+.\" PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL ITRONIX INC. BE LIABLE FOR ANY
+.\" DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+.\" (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+.\" LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+.\" ON ANY THEORY OF LIABILITY, WHETHER IN
+.\" CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+.\" ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+.\" POSSIBILITY OF SUCH DAMAGE.
+.\"
+.Dd August 15, 2006
+.Dt BCMFW 8
+.Os
+.Sh NAME
+.Nm bcmfw
+.Nd firmware loading utility for Broadcom BCM2033 chip based Bluetooth USB devices
+.Sh SYNOPSIS
+.Nm
+.Op Fl f Ar firmware
+.Op Fl m Ar mini-driver
+.Op Fl q
+.Op Ar ugenN Ar ...
+.Sh DESCRIPTION
+The
+.Nm
+utility loads the firmware and mini-driver files to a Broadcom BCM2033 chip
+based Bluetooth USB device attached at
+.Xr ugen 4 .
+.Pp
+.Nm
+first verifies the
+.Xr ugen 4
+device by checking the USB Vendor & Product ID's.
+The vendor ID should be 0x0a5c
+.Pq Dv USB_VENDOR_BROADCOM
+and the product ID should be 0x2033
+.Pq Dv USB_PRODUCT_BROADCOM_2033NF .
+.Pp
+Multiple
+.Ar ugen
+names can be specified, and if the
+.Fl q
+flag is specified,
+.Nm
+will be silent if any device fails the verification check.
+.Pp
+The options are as follows:
+.Bl -tag -width 12345678
+.It Fl f Ar firmware
+Specify alternate firmware file.
+The default name is
+.Pa BCM2033-FW.bin
+.It Fl m Ar mini-driver
+Specify alternate mini-driver file.
+The default name is
+.Pa BCM2033-MD.hex
+.It Fl q
+Be quiet when the ugen devices do not match the required Vendor and Product ID.
+.El
+.Sh FILES
+.Bl -tag -width ".Pa /dev/ugen Ns Ar N Ns Pa \&. Ns Ar EE X " -compact
+.It Pa BCM2033-MD.hex
+.It Pa BCM2033-FW.bin
+.It Pa /dev/ugen Ns Ar N Ns Pa \&. Ns Ar EE
+.El
+.Sh EXIT STATUS
+.Ex -std
+.Sh SEE ALSO
+.Xr ugen 4
+.Sh AUTHORS
+.An Iain Hibbert
+for Itronix, Inc.
