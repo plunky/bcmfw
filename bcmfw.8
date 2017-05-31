@@ -28,64 +28,104 @@
 .\" ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 .\" POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd August 15, 2006
+.Dd January 30, 2016
 .Dt BCMFW 8
 .Os
 .Sh NAME
 .Nm bcmfw
-.Nd firmware loading utility for Broadcom BCM2033 chip based Bluetooth USB devices
+.Nd firmware loader for Broadcom chip based Bluetooth adaptors
 .Sh SYNOPSIS
 .Nm
-.Op Fl f Ar firmware
-.Op Fl m Ar mini-driver
-.Op Fl q
-.Op Ar ugenN Ar ...
+.Op Fl qv
+.Op Fl f Qq Ar BCM2033 firmware
+.Op Fl m Qq Ar BCM2033 mini-driver
+.Op Ar device Ar ...
 .Sh DESCRIPTION
-The
+Modern Broadcom chips find their initial firmware instructions from
+an internal PROM after power up.
+This initial firmware is usually enough for proper functionality but,
+once running,
 .Nm
-utility loads the firmware and mini-driver files to a Broadcom BCM2033 chip
-based Bluetooth USB device attached at
+can upgrade it over the HCI interface with
+.Qq Patch RAM
+data files provided by Broadcom.
+.Nm
+probes all adaptors connected to the Bluetooth protocol stack unless
+any are specified on the commandline, in which case only those are probed.
+The probe first checks the Manufacturer code with the standard
+.Qq Read Local Version
+command, and only when it is 15
+.Pq Broadcom
+does it attempt to check the device itself, with vendor-specific commands.
+.Pp
+Because the device will need to be reset afterwards, and to prevent errors
+in a running system, no update will be attempted unless
+.Nm
+found the device in a non-enabled state.
+.Pp
+Older BCM2033 based devices do not have firmware and will not initially be
+configured as Bluetooth adaptors, so will attach as
 .Xr ugen 4 .
-.Pp
-.Nm
-first verifies the
-.Xr ugen 4
-device by checking the USB Vendor & Product ID's.
-The vendor ID should be 0x0a5c
-.Pq Dv USB_VENDOR_BROADCOM
-and the product ID should be 0x2033
-.Pq Dv USB_PRODUCT_BROADCOM_2033NF .
-.Pp
-Multiple
+If a
 .Ar ugen
-names can be specified, and if the
-.Fl q
-flag is specified,
+device name is passed on the commandline,
 .Nm
-will be silent if any device fails the verification check.
+checks the USB Vendor & Product ID's directly before proceeding, which
+should be 0x0a5c and 0x2033 respectively.
 .Pp
 The options are as follows:
 .Bl -tag -width 12345678
 .It Fl f Ar firmware
-Specify alternate firmware file.
+Specify alternate firmware file for BCM2033 devices.
 The default name is
 .Pa BCM2033-FW.bin
 .It Fl m Ar mini-driver
-Specify alternate mini-driver file.
+Specify alternate mini-driver file for BCM2033 devices.
 The default name is
 .Pa BCM2033-MD.hex
 .It Fl q
-Be quiet when the ugen devices do not match the required Vendor and Product ID.
+Be quiet in normal use.
+.It Fl v
+Be more verbose while operating.
 .El
+.Pp
+The Patch RAM files are not available directly from Broadcom but are
+provided via Windows Bluetooth drivers, often for specific devices, and the
+.Nm bcmfw-install
+program can be used to install them to the
+.Nx
+filesystem.
+For example, the support page for the ASUS X99 laptop at
+.Lp
+.D1 Sy https://www.asus.com/
+.Lp
+currently lists the
+.Lp
+.D1 Pa Bluetooth_V1201650_WHQL_Win10.zip
+.Lp
+archive which corresponds to the Broadcom Bluetooth driver
+version 12.0.1.650.
+Download and extract this archive, then find a directory with the
+.Qq .hex
+files and an
+.Qq .inf
+file
+.Pq Pa Bluetooth/BCM_DriverOnly/32 ,
+and execute
+.Nm bcmfw-install
+from there to install firmware files and an index to
+.Pa /libdata/bcmfw .
+.Pp
+After a successful update, the HCI revision of the device will change.
 .Sh FILES
 .Bl -tag -width ".Pa /dev/ugen Ns Ar N Ns Pa \&. Ns Ar EE X " -compact
-.It Pa BCM2033-MD.hex
-.It Pa BCM2033-FW.bin
+.It Pa /libdata/bcmfw/*
 .It Pa /dev/ugen Ns Ar N Ns Pa \&. Ns Ar EE
 .El
 .Sh EXIT STATUS
 .Ex -std
 .Sh SEE ALSO
+.Xr bluetooth 4 ,
 .Xr ugen 4
 .Sh AUTHORS
 .An Iain Hibbert
