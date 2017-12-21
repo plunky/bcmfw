@@ -26,7 +26,7 @@
 /*
  * bcmfw-install [source-dir]
  *
- * search for the *-brcm.inf file [in the directory given], parse
+ * search for the *.inf file [in the directory given], parse
  * it to discover which devices have PatchRAM files, copy them to
  * the libdata directory for each device.
  */
@@ -496,8 +496,8 @@ main(int argc, char *argv[])
 	nmodels = 0;
 
 	while ((de = readdir(dp)) != NULL) {
-		if ((len = strlen(de->d_name)) > 9
-		    && strcasecmp(&de->d_name[len - 9], "-brcm.inf") == 0) {
+		if ((len = strlen(de->d_name)) > 4
+		    && strcasecmp(&de->d_name[len - 4], ".inf") == 0) {
 
 			models = NULL;
 			sections = NULL;

@@ -23,21 +23,15 @@ ugen device name is passed on the commandline, **bcmfw** checks the USB
 Vendor & Product ID's directly before proceeding, which should be 0x0a5c
 and 0x2033 respectively.
 
-The Patch RAM files are not available directly from Broadcom but are
-provided via Windows Bluetooth drivers, often for specific devices, and
-the **bcmfw-install** program can be used to install them to the NetBSD
-filesystem.  For example, the support page for the ASUS X99 laptop at
+The Patch RAM files are not available directly from Broadcom but since
+Feb 2017 are supplied via the Microsoft Windows Update Service and can be
+found at:
 
-   https://www.asus.com/
+https://www.catalog.update.microsoft.com/Search.aspx?q=Broadcom+Bluetooth
 
-currently lists the
-
-   Bluetooth_V1201650_WHQL_Win10.zip
-
-archive which corresponds to the Broadcom Bluetooth driver version
-12.0.1.650.  Download and extract this archive, then find a directory
-with the ".hex" files and an ".inf" file (Bluetooth/BCM_DriverOnly/32),
-and execute **bcmfw-install** from there to install firmware files and an
-index to /usr/pkg/libdata/bcmfw/libdata/bcmfw.
+The latest version available at this time is 12.0.1.1010, download this
+.cab archive, and extract to a temporary directory.  There should be many
+".hex" files and an ".inf" file, and the bcmfw-install program can be
+used to install firmware files and an index to your NetBSD filesystem.
 
 After a successful update, the HCI revision of the device will change.
