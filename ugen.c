@@ -72,7 +72,7 @@ ugen_open_ep(const char *dv, int ee, int flags)
 
 	snprintf(path, sizeof(path), "/dev/%s.%02d", dv, ee);
 	fd = open(path, flags);
-	if (fd == -1)
+	if (fd == -1 && verbose > 0)
 		warn("%s", path);
 
 	return fd;
