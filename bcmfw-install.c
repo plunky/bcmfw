@@ -436,7 +436,12 @@ fw_install(void)
 	int ch;
 
 	easprintf(&path, "%s/index.txt", fwdir);
-	i = efopen(path, "w");
+	i = fopen(path, "w");
+	if (i == NULL) {
+		warnx("failed to open %s for writing", path);
+		free(path);
+		return;
+	}
 	free(path);
 
 	fprintf(i,  "#\n"
