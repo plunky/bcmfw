@@ -470,15 +470,15 @@ check_btdev(const char *dev)
 	if (hci == -1)
 		err(EXIT_FAILURE, "socket");
 
+	memset(btr.btr_name, 0, HCI_DEVNAME_SIZE);
 	if (dev) {
-		strncpy(btr.btr_name, dev, HCI_DEVNAME_SIZE);
+		snprintf(btr.btr_name, HCI_DEVNAME_SIZE, "%s", dev);
 		if (!get_btdev(SIOCGBTINFO))
 			err(EXIT_FAILURE, "%s get info failed", dev);
 
 		update_btdev();
 		put_btdev();
 	} else {
-		memset(&btr.btr_name, 0, HCI_DEVNAME_SIZE);
 		while (get_btdev(SIOCNBTINFO)) {
 			update_btdev();
 			put_btdev();
