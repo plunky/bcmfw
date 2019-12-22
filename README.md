@@ -29,7 +29,7 @@ found at:
 
 https://www.catalog.update.microsoft.com/Search.aspx?q=Broadcom+Bluetooth
 
-The latest version available at this time is 12.0.1.1010, download this
+The latest version available at this time is 12.0.1.1012, download this
 .cab archive, and extract to a temporary directory.  There should be many
 ".hex" files and an ".inf" file, and the bcmfw-install program can be
 used to install firmware files and an index to your NetBSD filesystem.
